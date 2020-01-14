@@ -3,3 +3,8 @@ header {
     background-color: salmon;
     padding: 80px;
 }
+
+img {
+    display:block;
+    margin:auto;
+}
