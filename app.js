@@ -1,194 +1,134 @@
 'use strict';
 
 var hours = ['6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm']
+var storeData = [];
+var listSection = 'storeSales';
+var tableSection = 'storeSales';
 
-var storeSeattle = {
-    location: 'Seattle',
-    custMaxHr: 65,
-    custMinHr: 23,
-    cookiesAvgCust: 6.3,
-    cookies: [],
-    simCookies: function(inHours, sectionID) {
-        var custNum = 0;
-        var cookieNum = 0;
-        var cookieString = '';
-        var cookiesTotal = 0;
-        var outputSection = document.getElementById(sectionID);
-        var newSeattleUL = document.createElement('ul');
-        newSeattleUL.textContent = this.location;
-        console.log(this.location);
-        for (var i=0; i < inHours.length; i++){
-            custNum = Math.floor(Math.random() * (this.custMaxHr - this.custMinHr + 1)) + this.custMinHr;
-            cookieNum = custNum * this.cookiesAvgCust;
-            cookieNum = Math.round(cookieNum);
-            this.cookies.push(cookieNum);
-            cookiesTotal += cookieNum;
-            cookieString = `${hours[i]}: ${cookieNum} cookies`;
-            console.log(cookieString);
-            var newCookiesLI = document.createElement('li');
-            newCookiesLI.textContent = cookieString;
-            newSeattleUL.appendChild(newCookiesLI);
-        }
-        // add total cookies to output
-        var newTotalCookiesLI = document.createElement('li');
-        cookieString = `Total: ${cookiesTotal} cookies`;
-        newTotalCookiesLI.textContent = cookieString;
-        newSeattleUL.appendChild(newTotalCookiesLI);
-        outputSection.appendChild(newSeattleUL);
-        return this.cookies;
-    }
+var Store = function(location, custMaxHr, custMinHr, cookiesAvgCust) {
+    this.location = location;
+    this.custMaxHr = custMaxHr;
+    this.custMinHr = custMinHr;
+    this.cookiesAvgCust = cookiesAvgCust;
+    this.cookieData = [];
 }
 
-var storeTokyo = {
-    location: 'Tokyo',
-    custMaxHr: 24,
-    custMinHr: 3,
-    cookiesAvgCust: 1.2,
-    cookies: [],
-    simCookies: function(inHours, sectionID) {
-        var custNum = 0;
-        var cookieNum = 0;
-        var cookieString = '';
-        var cookiesTotal = 0;
-        var outputSection = document.getElementById(sectionID);
-        var newTokyoUL = document.createElement('ul');
-        newTokyoUL.textContent = this.location;
-        console.log(this.location);
-        for (var i=0; i < inHours.length; i++){
-            custNum = Math.floor(Math.random() * (this.custMaxHr - this.custMinHr + 1)) + this.custMinHr;
-            cookieNum = custNum * this.cookiesAvgCust;
-            cookieNum = Math.round(cookieNum);
-            this.cookies.push(cookieNum);
-            cookiesTotal += cookieNum;
-            cookieString = `${hours[i]}: ${cookieNum} cookies`;
-            console.log(cookieString);
-            var newCookiesLI = document.createElement('li');
-            newCookiesLI.textContent = cookieString;
-            newTokyoUL.appendChild(newCookiesLI);
-        }
-        // add total cookies to output
-        var newTotalCookiesLI = document.createElement('li');
-        cookieString = `Total: ${cookiesTotal} cookies`;
-        newTotalCookiesLI.textContent = cookieString;
-        newTokyoUL.appendChild(newTotalCookiesLI);
-        outputSection.appendChild(newTokyoUL);
-        return this.cookies;
+Store.prototype.simCookies = function(inHours) {
+    var custNum = 0;
+    var cookieNum = 0;
+    var cookiesTotal = 0;
+    for (var i=0; i < inHours.length; i++) {
+        custNum = Math.floor(Math.random() * (this.custMaxHr - this.custMinHr + 1)+ this.custMinHr); //random integer between custMaxHr and custMinHr, inclusive
+        cookieNum = custNum * this.cookiesAvgCust;
+        cookieNum = Math.round(cookieNum);
+        this.cookieData.push(cookieNum);
+        cookiesTotal += cookieNum;
     }
+    this.cookieData.push(cookiesTotal);
+    storeData.push(this);
+    return this.cookieData;
 }
 
-var storeDubai = {
-    location: 'Dubai',
-    custMaxHr: 38,
-    custMinHr: 11,
-    cookiesAvgCust: 3.7,
-    cookies: [],
-    simCookies: function(inHours, sectionID) {
-        var custNum = 0;
-        var cookieNum = 0;
-        var cookieString = '';
-        var cookiesTotal = 0;
-        var outputSection = document.getElementById(sectionID);
-        var newDubaiUL = document.createElement('ul');
-        newDubaiUL.textContent = this.location;
-        console.log(this.location);
-        for (var i=0; i < inHours.length; i++){
-            custNum = Math.floor(Math.random() * (this.custMaxHr - this.custMinHr + 1)) + this.custMinHr;
-            cookieNum = custNum * this.cookiesAvgCust;
-            cookieNum = Math.round(cookieNum);
-            this.cookies.push(cookieNum);
-            cookiesTotal += cookieNum;
-            cookieString = `${hours[i]}: ${cookieNum} cookies`;
-            console.log(cookieString);
-            var newCookiesLI = document.createElement('li');
-            newCookiesLI.textContent = cookieString;
-            newDubaiUL.appendChild(newCookiesLI);
-        }
-        // add total cookies to output
-        var newTotalCookiesLI = document.createElement('li');
-        cookieString = `Total: ${cookiesTotal} cookies`;
-        newTotalCookiesLI.textContent = cookieString;
-        newDubaiUL.appendChild(newTotalCookiesLI);
-        outputSection.appendChild(newDubaiUL);
-        return this.cookies;
+Store.prototype.renderList = function(inHours, inCookies, sectionID) {
+    var cookieString = '';
+    var outputSection = document.getElementById(sectionID);
+    var storeUL = document.createElement('ul');
+    storeUL.textContent = this.location;
+    for (var i=0; i < inHours.length;i++) {
+        cookieString = `${inHours[i]}: ${inCookies[i]} cookies`;
+        var hrLI = document.createElement('li');
+        hrLI.textContent = cookieString;
+        storeUL.appendChild(hrLI);
     }
+    cookieString = `Total: ${inCookies[i]} cookies`;
+    var totalLI = document.createElement('li');
+    totalLI.textContent = cookieString;
+    storeUL.appendChild(totalLI);
+    outputSection.appendChild(storeUL);
 }
 
-var storeParis = {
-    location: 'Paris',
-    custMaxHr: 38,
-    custMinHr: 20,
-    cookiesAvgCust: 2.3,
-    cookies: [],
-    simCookies: function(inHours, sectionID) {
-        var custNum = 0;
-        var cookieNum = 0;
-        var cookieString = '';
-        var cookiesTotal = 0;
-        var outputSection = document.getElementById(sectionID);
-        var newParisUL = document.createElement('ul');
-        newParisUL.textContent = this.location;
-        console.log(this.location);
-        for (var i=0; i < inHours.length; i++){
-            custNum = Math.floor(Math.random() * (this.custMaxHr - this.custMinHr + 1)) + this.custMinHr;
-            cookieNum = custNum * this.cookiesAvgCust;
-            cookieNum = Math.round(cookieNum);
-            this.cookies.push(cookieNum);
-            cookiesTotal += cookieNum;
-            cookieString = `${hours[i]}: ${cookieNum} cookies`;
-            console.log(cookieString);
-            var newCookiesLI = document.createElement('li');
-            newCookiesLI.textContent = cookieString;
-            newParisUL.appendChild(newCookiesLI);
-        }
-        // add total cookies to output
-        var newTotalCookiesLI = document.createElement('li');
-        cookieString = `Total: ${cookiesTotal} cookies`;
-        newTotalCookiesLI.textContent = cookieString;
-        newParisUL.appendChild(newTotalCookiesLI);
-        outputSection.appendChild(newParisUL);
-        return this.cookies;
+Store.prototype.render = function(table) {
+    //store location row header
+    var storeTR = document.createElement('tr');
+    var storeLocTH = document.createElement('th');
+    storeLocTH.textContent = this.location;
+    storeTR.appendChild(storeLocTH);
+    for (var j=0; j < hours.length; j++) {
+        //store row main
+        var storeTD = document.createElement('td');
+        storeTD.textContent = this.cookieData[j];
+        storeTR.appendChild(storeTD);
     }
+    //store row footer totals
+    var storeTotal = this.cookieData[j];
+    var storeTotalTD = document.createElement('td')
+    storeTotalTD.textContent = storeTotal;
+    storeTR.appendChild(storeTotalTD);
+    table.appendChild(storeTR);
 }
 
-var storeLima = {
-    location: 'Lima',
-    custMaxHr: 16,
-    custMinHr: 2,
-    cookiesAvgCust: 4.6,
-    cookies: [],
-    simCookies: function(inHours, sectionID) {
-        var custNum = 0;
-        var cookieNum = 0;
-        var cookieString = '';
-        var cookiesTotal = 0;
-        var outputSection = document.getElementById(sectionID);
-        var newLimaUL = document.createElement('ul');
-        newLimaUL.textContent = this.location;
-        console.log(this.location);
-        for (var i=0; i < inHours.length; i++){
-            custNum = Math.floor(Math.random() * (this.custMaxHr - this.custMinHr + 1)) + this.custMinHr;
-            cookieNum = custNum * this.cookiesAvgCust;
-            cookieNum = Math.round(cookieNum);
-            this.cookies.push(cookieNum);
-            cookiesTotal += cookieNum;
-            cookieString = `${hours[i]}: ${cookieNum} cookies`;
-            console.log(cookieString);
-            var newCookiesLI = document.createElement('li');
-            newCookiesLI.textContent = cookieString;
-            newLimaUL.appendChild(newCookiesLI);
-        }
-        // add total cookies to output
-        var newTotalCookiesLI = document.createElement('li');
-        cookieString = `Total: ${cookiesTotal} cookies`;
-        newTotalCookiesLI.textContent = cookieString;
-        newLimaUL.appendChild(newTotalCookiesLI);
-        outputSection.appendChild(newLimaUL);
-        return this.cookies;
+function renderAll(sectionID) {
+    var section = document.getElementById(sectionID);
+    var table = document.createElement('table');
+    renderHeader(table);
+    for (var i=0; i < storeData.length; i++) {
+        storeData[i].render(table);
     }
+    renderFooter(table);
+    section.appendChild(table);
 }
 
-storeSeattle.simCookies(hours, 'storeSales');
-storeTokyo.simCookies(hours, 'storeSales');
-storeDubai.simCookies(hours, 'storeSales');
-storeParis.simCookies(hours, 'storeSales');
-storeLima.simCookies(hours, 'storeSales');
+function renderHeader(table) {
+    var headerTR = document.createElement('tr');
+    //blank location column header
+    var blankTH = document.createElement('th');
+    headerTR.appendChild(blankTH);
+    for (var i=0; i<hours.length; i++) {
+        //hour main headers
+        var hourTH = document.createElement('th');
+        hourTH.textContent = hours[i];
+        headerTR.appendChild(hourTH);
+    }
+    //hour total header
+    var totalLocTH = document.createElement('th');
+    totalLocTH.textContent = 'Daily Location Total'
+    headerTR.appendChild(totalLocTH);
+    table.appendChild(headerTR);
+}
+
+function renderFooter(table) {
+    var grandTotal = 0;
+    var timeTotalRow = document.createElement('tr');
+    var timeTotalTH = document.createElement('th');
+    timeTotalTH.textContent = 'Totals';
+    timeTotalRow.appendChild(timeTotalTH);
+    for (var i=0; i < hours.length; i++) {
+        var timeTotal = 0;
+        var timeTotalTD = document.createElement('td');
+        for (var j=0; j < storeData.length;j++) {
+            timeTotal += storeData[j].cookieData[i];
+        }
+        timeTotalTD.textContent = timeTotal;
+        timeTotalRow.appendChild(timeTotalTD);
+        grandTotal += timeTotal;
+    }
+    var grandTotalTD = document.createElement('td');
+    grandTotalTD.textContent = grandTotal;
+    timeTotalRow.appendChild(grandTotalTD);
+    table.appendChild(timeTotalRow);
+}
+
+// storeSeattle.simCookies(hours, 'storeSales');
+var storeSeattle = new Store('Seattle', 65, 23, 6.3);
+var storeTokyo = new Store('Tokyo', 24, 3, 1.2);
+var storeDubai = new Store('Dubai', 38, 11, 3.7);
+var storeParis = new Store('Paris', 38, 20, 2.3);
+var storeLima = new Store('Lima', 2, 16, 4.6);
+storeSeattle.simCookies(hours);
+storeTokyo.simCookies(hours);
+storeDubai.simCookies(hours);
+storeParis.simCookies(hours);
+storeLima.simCookies(hours);
+renderAll(tableSection);
+
+
