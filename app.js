@@ -4,6 +4,8 @@ var hours = ['6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm
 var storeData = [];
 var listSection = 'storeSales';
 var tableSection = 'storeSales';
+var storeUpdateForm = document.getElementById('storeUpdateForm');
+storeUpdateForm.addEventListener('submit', handleStoreUpdate);
 
 var Store = function(location, custMaxHr, custMinHr, cookiesAvgCust) {
     this.location = location;
@@ -68,7 +70,11 @@ Store.prototype.render = function(table) {
 }
 
 function renderAll(sectionID) {
+    
     var section = document.getElementById(sectionID);
+    if (section.firstChild) {
+        section.removeChild(section.firstChild);
+    }
     var table = document.createElement('table');
     renderHeader(table);
     for (var i=0; i < storeData.length; i++) {
@@ -118,7 +124,40 @@ function renderFooter(table) {
     table.appendChild(timeTotalRow);
 }
 
-// storeSeattle.simCookies(hours, 'storeSales');
+function handleStoreUpdate(event) {
+    event.preventDefault();
+    var location = event.target.location.value;
+    location = location.charAt(0).toUpperCase() + location.slice(1); //Force location string to have first letter capitalized
+    var custMaxHr = parseInt(event.target.custMaxHr.value);
+    var custMinHr = parseInt(event.target.custMinHr.value);
+    var cookiesAvgCust = event.target.cookiesAvgCust.value;
+    storeUpdateForm.reset();
+
+    var locationExists = checkLocationExists(location);
+    if (locationExists) {
+        alert(`Error: ${location} already exists.`);
+    } else {
+        var newStore = new Store(location, custMaxHr, custMinHr, cookiesAvgCust);
+        newStore.simCookies(hours);
+
+        renderAll(tableSection);
+    }
+    
+}
+
+function checkLocationExists(location) { //Checks whether the store already exists in the data
+    var checkLocation = '';
+    var locationExists = false;
+    for (var i=0; i < storeData.length;i++) {
+        checkLocation = storeData[i].location.toLowerCase();
+        if (location.toLowerCase() === checkLocation) {
+            locationExists = true;
+        }
+    }
+    return locationExists;
+}
+
+//Initial 5 stores
 var storeSeattle = new Store('Seattle', 65, 23, 6.3);
 var storeTokyo = new Store('Tokyo', 24, 3, 1.2);
 var storeDubai = new Store('Dubai', 38, 11, 3.7);
@@ -130,5 +169,3 @@ storeDubai.simCookies(hours);
 storeParis.simCookies(hours);
 storeLima.simCookies(hours);
 renderAll(tableSection);
-
-
