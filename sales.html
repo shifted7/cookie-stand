@@ -4,6 +4,23 @@
         <title>Salmon Cookies - Sales</title>
     </head>
     <body>
+        <form id="storeUpdateForm">
+            <fieldset>
+                <legend>Update Store Data</legend>
+                <label>Store name/location:</label>
+                <input name="location" type="text" required>
+                <fieldset>
+                    <legend>customer information</legend>
+                    <label>Maximum cust/hr:</label>
+                    <input name="custMaxHr" type="number" required>
+                    <label>Minimum cust/hr:</label>
+                    <input name="custMinHr" type="number" required>
+                    <label>Avg cookies/cust</label>
+                    <input name="cookiesAvgCust" type="number" step=".01" required>
+                </fieldset>
+                <button type="submit">Submit</button>
+            </fieldset>
+        </form>
         <div id='storeSales'></div>
         <script type="text/javascript" src="app.js"></script>
     </body>
