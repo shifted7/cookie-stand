@@ -1,6 +1,9 @@
 body {
     margin: 0px;
     width:100%;
+    font-family: 'Times New Roman', Times, serif;
+    color: #101010;
+    background-color: #488d9a;
 }
 
 header {
@@ -10,8 +13,18 @@ header {
 }
 
 h1 {
-    font-family: 'Courgette', handwriting;
+    font-family: 'Courgette', cursive;
+    color: #333333;
     font-size: 40px;
+    font-weight: bold;
+}
+
+header h2 {
+    font-style: italic;
+}
+
+header h3 {
+    font-style: italic;
 }
 
 #hero {
@@ -21,10 +34,14 @@ h1 {
 
 #stores {
     background-color: #488d9a;
-    color:whitesmoke;
+    color: #101010;
     height: 200px;
     padding: 20px;
     text-align: left;
+}
+
+#stores h2 {
+    font-family: Helvetica, sans-serif;
 }
 
 #stores ul {
@@ -50,21 +67,37 @@ h1 {
 }
 
 #familyimg {
-    float: right;
+    float: left;
     margin: 0px;
 }
 
-blockquote {
-    float: right;
+#testimonials blockquote {
+    float: left;
     font-size: 60px;
     line-height: 150px;
-    text-align: right;
-    margin-right: 15%;
+    text-align: center;
+    margin-top: 140px;
+    margin-bottom: 140px;
+    height: 200px
+
 }
 
-cite {
+#testimonials cite {
     font-size: 32px;
     text-align: right;
+}
+
+#motto {
+    background-color: white;
+    height: 1000px;
+}
+
+#motto div {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 300px;
+    width: 500px;
+    height: 400px;
 }
 
 #leftFish {
@@ -72,38 +105,69 @@ cite {
     margin: auto;
 }
 
-#motto {
-    padding:200px;
-}
-
 h4 {
     text-align: center;
-    margin: 200px;
-    margin-bottom: 300px;
-    font-size: 200%;
+    font-size: 40px;
+    color: #555555;
 }
 
 #story {
-    background-color: salmon;
+    background-image: url(assets/frosted-cookie-bg2.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     height: 800px;
     font-size: 25px;
     text-align: center;
-    padding: 40px;
+    padding: 40px; 
+}
+
+#story h2 {
+    font-family: Helvetica, sans-serif;
+    background-color: #488d9a;
+    border-radius: 12px;
+    border-radius: 8px;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #storyPat {
-    width:40%;
+    width: 800px;
     margin-left:auto;
     margin-right:auto;
     text-align: left;
     margin-top: 80px;
     margin-bottom: 80px;
-    border-style: solid;
-    padding: 40px;
+    border-left-style: solid;
+    padding: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#story img {
+    border-radius: 12px;
+}
+
+#promo {
+    height: 600px;
+    background-color: #444444;
+    padding-top: 100px;
+}
+
+#promo div {
+    background-color: white;
+    border-radius: 12px;
+    width: 800px;
+    height: 450px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 25px;
+    
 }
 
 #lastSection {
-    background-color: #488d9a;
+    background-color: salmon;
     height: 80px;
 
 }
