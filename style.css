@@ -9,6 +9,11 @@ header {
     padding: 80px;
 }
 
+h1 {
+    font-family: 'Courgette', handwriting;
+    font-size: 40px;
+}
+
 #hero {
     display:block;
     margin:auto;
@@ -22,11 +27,21 @@ header {
     text-align: left;
 }
 
-div {
-    float: left;
+#stores ul {
+    width: 950px;
+    height: 100px;
+    padding: 0px;
+    margin: auto;
+}
+
+#stores li {
+    float:left;
+    list-style-type: none;
+    padding: 0px;
     text-align: center;
-    margin: 20px;
-    width: 15%;
+    width:150px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 #testimonials {
